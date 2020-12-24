@@ -3,4 +3,8 @@ from django.http import HttpResponse
 
 # Create your views here.
 def firstview(request):
-    return HttpResponse("Saludos")
+    context ={
+        'sample_var':"ejemplo"
+
+    }
+    return render(request,'hookah.html',context)

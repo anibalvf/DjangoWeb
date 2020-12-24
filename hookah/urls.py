@@ -1,6 +1,6 @@
 from django.urls import path, include
 from hookah.views import firstview
 
-urlpatters = [
+urlpatterns = [
     path('',firstview, name = 'fi'),
 ]
