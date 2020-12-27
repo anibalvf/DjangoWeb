@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'hookah',
-    'app',
+    
 ]
 
 MIDDLEWARE = [
@@ -126,4 +126,8 @@ STATIC_ROOT = ''
 STATICFILES_DIRS=(
     'static',
 )
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = ''
+
 
