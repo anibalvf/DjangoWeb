@@ -32,8 +32,9 @@
 
 
 <body>
-        {% include 'navbar.html' %}
-
+        {% if request.user.is_authenticated %}
+            {% include 'navbar.html' %}
+        {% endif %}
       <main class="container">
       
         <div class="starter-template text-center py-5 px-3">

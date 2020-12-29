@@ -6,6 +6,12 @@ from hookah.utils import image_upload_location
 class Company (models.Model):
     name = models.CharField("Name",max_length = 50)
     tax_number = models.IntegerField("Tax number", unique=True)
+    class Meta:
+        verbose_name = "company"
+        verbose_name_plural = "Companys"
+        ordering = ['-name']
+    def __str__(self):
+        return self.name
 
 class Hookah(models.Model):
     COLOR_YELLOW = 1
@@ -41,5 +47,11 @@ class country(models.Model):
     name = models.CharField("Name",max_length = 50)
     # CAMPO PARA DEFINIR UNA RELACION MUCHOS A MUCHOS CLAVE FORANEA
     hookah = models.ManyToManyField(Hookah,blank = True, related_name="Country")
+    class Meta:
+        verbose_name = "Country"
+        verbose_name_plural = "Countrys"
+        ordering = ['-name']
+    def __str__(self):
+        return self.name
 
 

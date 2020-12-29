@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div>
+        <ul>
+
+            {% for hookah in hookah_list %}
+                <li>
+                    {% comment %}
+                        {% if hookah.is_premium %}
+                        {% endif %}
+                    {% endcomment %}
+                    <a href="{% url 'hookah_details_view' hookah.pk %}">{{ hookah }} </a>
+
+
+                </li>
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+{% endblock %}
