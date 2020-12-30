@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'crispy_forms',
+    'rest_framework',
     'hookah',
     'shop',
     
@@ -134,5 +136,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = ''
 
 LOGIN_REDIRECT_URL = reverse_lazy('hookah_list_view')
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 

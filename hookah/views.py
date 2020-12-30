@@ -11,7 +11,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 
-from hookah.forms import CompanyForm
+from hookah.forms import CompanyForm, HookahForm
 from hookah.mixins import AddLoQueSeaMixin
 from hookah.models import Hookah, Company
 
@@ -64,17 +64,6 @@ def hookah_list_view(request):
     return render(request, 'hookah_list.html', context)
 
 
-class HookahListView(LoginRequiredMixin, View):
-    def get(self, request):
-        return render(request, 'hookah_list.html', {
-            'hookah_list': Hookah.objects.all()
-        })
-
-
-class HookahListViewSecond(LoginRequiredMixin, ListView):
-    model = Hookah
-
-
 @login_required
 def hookah_details_view(request, pk):
     # print("usuario", request.user)
@@ -89,10 +78,31 @@ def hookah_details_view(request, pk):
     return render(request, 'hookah_details.html', context)
 
 
+class HookahListView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, 'hookah_list.html', {
+            'hookah_list': Hookah.objects.all()
+        })
+
+
+# CLASES--------------------------------------------------------------
+
+class HookahListViewSecond(LoginRequiredMixin, ListView):
+    model = Hookah
+
+
 class HookahDetailsView(AddLoQueSeaMixin, LoginRequiredMixin, DetailView):
     model = Hookah
 
 
+class CompanylistView(LoginRequiredMixin, ListView):
+    model = Company
+
+
+class CompanyDetailView(LoginRequiredMixin, DetailView):
+    model = Company
+
+# FORMULARIOS CON DEF----------------------------------------------------
 def edit_company_old(request, pk):
     company = get_object_or_404(Company, pk=pk)
 
@@ -133,9 +143,32 @@ def edit_company(request, pk):
 
     return render(request, 'company/company_form.html', context)
 
+# FORMULARIOS CON CLASES----------------------------------------------------
 
-class CompanyDetailView(DetailView):
+class CompanyAndHookahCreateView(CreateView):
     model = Company
+    form_class = CompanyForm
+    template_name = "hookah/company_create_with_hookahs.html"
+    success_url = reverse_lazy('hookah_list_view')
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+
+        if  self.request.POST:
+            ctx['hookah_form'] = HookahForm(self.request.POST)
+        else:
+            ctx['hookah_form'] = HookahForm()
+        return ctx
+
+    def form_valid(self, form):
+        ctx = self.get_context_data()
+        hookah_form = ctx['hookah_form']
+
+        if hookah_form.is_valid():
+            self.object = form.save()
+            hookah_form.instance = self.company
+            hookah_form.save()
+        return super().form_valid(form)
 
 
 class CompanyUpdatedView(UpdateView):
@@ -143,7 +176,14 @@ class CompanyUpdatedView(UpdateView):
     form_class = CompanyForm
     success_url = reverse_lazy('hookah_list_view')
 
+
 class CompanyCreateView(CreateView):
     model = Company
     form_class = CompanyForm
     success_url = reverse_lazy('hookah_list_view')
+
+class HookahCreateView(CreateView):
+    model = Hookah
+    form_class = HookahForm
+    success_url = reverse_lazy('hookah_list_view')
+

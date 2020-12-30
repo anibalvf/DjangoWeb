@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div>
+        <ul>
+
+            {% for company in company_list %}
+                <li>
+                    <a href="{% url 'company_detail_view' company.pk %}">{{ company }} </a> <a href="{% url 'company_edit_view' company.pk %}" class="button">editar</a>
+
+                </li>
+            {% endfor %}
+
+        </ul>
+        <a href="{% url 'company_create_view' %}"> add</a>
+
+    </div>
+
+
+{% endblock %}
